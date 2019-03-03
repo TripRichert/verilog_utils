@@ -1,0 +1,52 @@
+Wishbone Datasheet for wish_pack
+================================
+
+wish_pack is a wishbone B4 compliant module. It takes DATA_WIDTH width data from a src bus over several clock cycles, then concatonates NUM_PACK data samples and outputs the result on a dest bus.
+
+.Sys bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+| clk_i | clk_i: rising edge clock
+| rst_i | rst_i
+|====================
+
+.Parameter table
+[width="75%"]
+|====================
+|Parameter | Description
+
+| DATA_WIDTH    | bit width of src data bus, granularity of dest data bus
+| NUM_PACK      | bit width of src bus samples concatonated for dest
+| TGC_WIDTH     | bit width of both bus tgc signals
+| LITTLE_ENDIAN | specifies if d_dat_o is little endian, otherwise big endian.
+|====================
+
+
+.Src bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+ | s_stb_i | stb_i
+ | s_cyc_i | cyc_i
+ | s_ack_o | ack_o
+ | s_stall_o | stall_o (optional)
+ | s_dat_i | dat_i: DATA_WIDTH wide, DATA_WIDTH granularity
+ | s_tgc_i | tgc_i (optional): TGC_WIDTH wide, logical ored during concat of data
+|====================
+
+.Dest bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+| d_stb_o | stb_o
+| d_cyc_o | cyc_o
+| d_ack_i | ack_i
+| d_dat_o | dat_o: DATA_WIDTH wide, DATA_WIDTH granularity, little endian if LITTLE_ENDIAN is 1
+| s_tgc_i | tgc_i (optional): TGC_WIDTH wide, logical ored during concat of data
+|====================
+
+The tgc signals are meant to be used for signals like "first" or "last". For each set of NUM_PACK tgc_i received, the tgc_i are logical or'ed together to produce tgc_o. 
