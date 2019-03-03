@@ -45,7 +45,7 @@ wish_pack is a wishbone B4 compliant module. It takes DATA_WIDTH width data from
 | d_stb_o | stb_o
 | d_cyc_o | cyc_o
 | d_ack_i | ack_i
-| d_dat_o | dat_o: DATA_WIDTH wide, DATA_WIDTH granularity, little endian if LITTLE_ENDIAN is 1
+| d_dat_o | dat_o: DATA_WIDTH * NUM_PACK wide, DATA_WIDTH granularity, little endian if LITTLE_ENDIAN is 1
 | s_tgc_i | tgc_i (optional): TGC_WIDTH wide, logical ored during concat of data
 |====================
 

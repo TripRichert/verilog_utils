@@ -1,2 +1,10 @@
-generated/wish_pack.html : wish_pack.adoc
+default: generated/wish_pack.html generated/wish_readIntegers.html
+
+generated/wish_pack.html : wish_pack.adoc | generated
 	asciidoc -o generated/wish_pack.html wish_pack.adoc 
+
+generated/wish_readIntegers.html : wish_readIntegers.adoc | generated
+	asciidoc -o generated/wish_readIntegers.html wish_readIntegers.adoc
+
+generated :
+	mkdir -p generated

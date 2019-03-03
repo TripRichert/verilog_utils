@@ -1,0 +1,37 @@
+Wishbone Datasheet for wish_readIntegers
+========================================
+
+Simulation only wish_readIntegers is a wishbone B4 compliant module. It reads N integers per line from a file and outputs them concatonated on dat_o.
+
+.Sys bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+| clk_i | clk_i: rising edge clock
+| rst_i | rst_i
+|====================
+
+.Parameter table
+[width="75%"]
+|====================
+|Parameter | Description
+
+| DATA_WIDTH    | bit width of integers read from file, must be < 32
+| N             | number of integers per line in file concatonated
+| LITTLE_ENDIAN | specifies if dat_o is little endian, otherwise big endian.
+|====================
+
+
+.Dest bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+| stb_o | stb_o
+| cyc_o | cyc_o
+| ack_i | ack_i
+| dat_o | dat_o: DATA_WIDTH * N wide, DATA_WIDTH granularity, little endian if LITTLE_ENDIAN is 1
+| tgc_o | width 2, currently unsupported
+|====================
+
