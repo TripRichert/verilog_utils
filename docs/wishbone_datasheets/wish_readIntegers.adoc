@@ -17,7 +17,7 @@ Simulation only wish_readIntegers is a wishbone B4 compliant module. It reads N 
 |====================
 |Parameter | Description
 
-| DATA_WIDTH    | bit width of integers read from file, must be < 32
+| DATA_WIDTH    | bit width of integers read from file, must be <= 32
 | N             | number of integers per line in file concatonated
 | LITTLE_ENDIAN | specifies if dat_o is little endian, otherwise big endian.
 |====================
@@ -32,6 +32,6 @@ Simulation only wish_readIntegers is a wishbone B4 compliant module. It reads N 
 | cyc_o | cyc_o
 | ack_i | ack_i
 | dat_o | dat_o: DATA_WIDTH * N wide, DATA_WIDTH granularity, little endian if LITTLE_ENDIAN is 1
-| tgc_o | width 2, currently unsupported
+| tgc_o | width 2, specifies packet boundaries, based on semicolons terminating lines in file. tgc_o[0] is high on first word of packet, tgc_o[1] is high on last word of packet
 |====================
 

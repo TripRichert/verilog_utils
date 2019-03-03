@@ -36,10 +36,11 @@ module wish_readIntegers
   reg [DATA_WIDTH - 1:0]     tmp0;
   reg [DATA_WIDTH - 1:0]     tmp1;
   integer                    tmp;
+  integer                    char;
+  
   
   
 
-//  assign dat_o = {tmp1, tmp0};
   
   
   initial begin
@@ -53,15 +54,21 @@ module wish_readIntegers
     if (!$feof(data_file)) begin
       for (i = 0; i < N; i = i + 1) begin
         scan_file = $fscanf(data_file, "%d", tmp);
+        scan_file = $fscanf(data_file, "%c", char);
         if (LITTLE_ENDIAN) begin
           dat_o[DATA_WIDTH * i +: DATA_WIDTH] <= tmp;
         end else begin
           dat_o[DATA_WIDTH * (N - i - 1) +: DATA_WIDTH] <= tmp;
         end
       end
-      
+      tgc_o[0] = 1;
+      if (char == ";") begin
+        tgc_o[1] = 1;
+      end else begin
+        tgc_o[1] = 0;
+      end
+    
       loaded <= 1;
-//      end
     end
   end
 
@@ -74,13 +81,20 @@ module wish_readIntegers
     end  
     if (!$feof(data_file)) begin
       if (!loaded || ack_i) begin
+        tgc_o[0] <= tgc_o[1];
         for (i = 0; i < N; i = i + 1) begin    
           scan_file = $fscanf(data_file, "%d", tmp);
+          scan_file = $fscanf(data_file, "%c", char);
           if (LITTLE_ENDIAN) begin
             dat_o[DATA_WIDTH * i +: DATA_WIDTH] <= tmp;
           end else begin
             dat_o[DATA_WIDTH * (N - i - 1) +: DATA_WIDTH] <= tmp;
           end
+        end
+        if (char == ";") begin
+          tgc_o[1] <= 1;
+        end else begin
+          tgc_o[1] <= 0;
         end
         loaded <= 1;
       end

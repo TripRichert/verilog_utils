@@ -40,7 +40,7 @@ module tb_wish_readIntegers;
   end
 
   always @(posedge(clk)) begin
-    $display("Time= %t\trst= %d\tdat= %x\tstb= %d\tcyc= %d\tack= %d", $time, rst, dat, stb, cyc, ack);
+    $display("Time= %t\trst= %d\tdat= %x\tstb= %d\tcyc= %d\tack= %d\ttgc= %x", $time, rst, dat, stb, cyc, ack, tgc);
   end
   initial begin
     @(posedge(clk));
