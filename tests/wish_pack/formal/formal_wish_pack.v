@@ -50,6 +50,8 @@ module formal_wish_pack
 
   reg [3:0]                                            gap_cnt;
   reg [3:0]                                            ack_gap_cnt;
+  reg [TGC_WIDTH - 1 : 0]                              tgc;
+  
   
   wish_pack #(.LITTLE_ENDIAN(LITTLE_ENDIAN),
       .TGC_WIDTH(TGC_WIDTH),
@@ -104,6 +106,7 @@ module formal_wish_pack
     end else begin
       index = NUM_PACK - 1;
     end
+    tgc <= 0;
   end
 
   always @(posedge clk) begin
@@ -119,6 +122,11 @@ module formal_wish_pack
     end
     if (s_stb_i && s_cyc_i && s_ack_o) begin
       dat[(index + 1) * DATA_WIDTH - 1 : index * DATA_WIDTH] <= s_dat_i;
+      if ((LITTLE_ENDIAN)?(index == NUM_PACK - 1):(index == 0)) begin
+        tgc <= s_tgc;
+      end else begin
+        tgc <= tgc | s_tgc;
+      end
       
       if (LITTLE_ENDIAN) begin
         if (index == NUM_PACK - 1 ) begin
