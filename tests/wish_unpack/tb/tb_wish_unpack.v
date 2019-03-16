@@ -1,12 +1,12 @@
 
-module tb_wish_pack;
+module tb_wish_unpack;
   
   localparam DATA_WIDTH = 8;
   localparam NUM_PACK   = 4;
   localparam TGC_WIDTH  = 2;
   localparam LITTLE_ENDIAN = 0;
-  localparam filename = "testcases/test1.dat";
-  localparam logfilename = "testcases/test1.result";
+  localparam filename = "testcases/test0.dat";
+  localparam logfilename = "testcases/test0.result";
 
   reg  clk;
   reg  rst;
@@ -15,14 +15,14 @@ module tb_wish_pack;
   wire s_ack;
   wire s_stall;
 
-  wire [DATA_WIDTH-1:0] s_dat;
+  wire [DATA_WIDTH-1:0] d_dat;
   wire [TGC_WIDTH-1:0]  s_tgc;
 
   wire                 d_stb;
   wire                 d_cyc;
   wire                 d_ack;
 
-  wire [(DATA_WIDTH * NUM_PACK) - 1:0] d_dat;
+  wire [(DATA_WIDTH * NUM_PACK) - 1:0] s_dat;
   wire [TGC_WIDTH-1:0]               d_tgc;
   
   reg                                  init_1z;
@@ -31,7 +31,7 @@ module tb_wish_pack;
 
   wish_readIntegers #(
                   .DATA_WIDTH(DATA_WIDTH),
-                  .N(1),
+                  .N(NUM_PACK),
                   .filename(filename),
                   .LITTLE_ENDIAN(LITTLE_ENDIAN)
                       ) stim 
@@ -47,10 +47,9 @@ module tb_wish_pack;
   
  
 
-  wish_pack 
+  wish_unpack 
     #(
       .LITTLE_ENDIAN(LITTLE_ENDIAN),
-      .TGC_WIDTH(TGC_WIDTH),
       .NUM_PACK(NUM_PACK),
       .DATA_WIDTH(DATA_WIDTH)
       ) utt
@@ -73,7 +72,7 @@ module tb_wish_pack;
   wish_writeIntegers 
     #(
       .LITTLE_ENDIAN(LITTLE_ENDIAN),
-      .N(NUM_PACK),
+      .N(1),
       .DATA_WIDTH(DATA_WIDTH),
       .filename(logfilename)
       ) logger
@@ -86,7 +85,6 @@ module tb_wish_pack;
        .dat_i(d_dat),
        .tgc_i(d_tgc[1])
        );
-  
 
   initial begin
     clk = 0;

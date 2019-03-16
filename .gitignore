@@ -2,3 +2,4 @@
 *.*~
 docs/wishbone_datasheets/generated/
 tests/*/generated/
+*.result
