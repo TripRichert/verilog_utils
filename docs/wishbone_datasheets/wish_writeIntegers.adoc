@@ -1,0 +1,37 @@
+Wishbone Datasheet for wish_writeIntegers
+=========================================
+
+Simulation only wish_writeIntegers is a wishbone B4 compliant module. It logs N integers per line (space separated) to a file from a concatonated input
+
+.Sys bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+| clk_i | clk_i: rising edge clock
+| rst_i | rst_i
+|====================
+
+.Parameter table
+[width="75%"]
+|====================
+|Parameter | Description
+
+| DATA_WIDTH    | bit width of integers write from file, must be <= 32
+| N             | number of integers per line in file concatonated
+| LITTLE_ENDIAN | specifies if dat_o is little endian, otherwise big endian.
+|====================
+
+
+.Dest bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+| stb_i | stb_i
+| cyc_i | cyc_i
+| ack_o | ack_o
+| dat_i | dat_i: DATA_WIDTH * N wide, DATA_WIDTH granularity, little endian if LITTLE_ENDIAN is 1
+| tgc_i | width 1, specifies end of packets, based on semicolons terminating lines in file. tgc_i should be raised on last word of packet
+|====================
+

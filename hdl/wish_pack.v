@@ -54,10 +54,9 @@ module wish_pack
   //blocking, only use locally!!!
   reg                                    var_move = 0;
   
-  reg                                    stored_tgc = 0;
+  reg     [TGC_WIDTH-1:0] stored_tgc = 0;
 
 
-//  assume property (NUM_PACK > 1);
 
   assign s_stall_o = ((cnt == 4 && !d_ack_i) && d_stb_o && d_cyc_o);
   
@@ -66,6 +65,7 @@ module wish_pack
   assign d_dat_o = data_buf;
   
 
+  
   always @(posedge clk_i)
   begin
 
@@ -73,6 +73,7 @@ module wish_pack
       cnt <= 0;
       var_move = 0;
       stored_tgc <= 0;
+      d_tgc_o <= 0;
       d_stb_o <= 0;
       d_cyc_o <= 0;
       data_buf <= 0;
@@ -84,11 +85,19 @@ module wish_pack
         cnt <= 0;//overwritten if new data
         d_stb_o <= 0;
         d_cyc_o <= 0;
-        stored_tgc <= 0;
-        d_tgc_o    <= 0;
+        if (s_stb_i && s_cyc_i && s_ack_o) begin
+          stored_tgc <= s_tgc_i;
+        end else begin
+          stored_tgc <= 0;
+        end
       end
 
       if (var_move) begin
+        if (cnt == 0 || cnt == NUM_PACK) begin
+          stored_tgc <= s_tgc_i;
+        end else begin
+          stored_tgc <= s_tgc_i | stored_tgc;
+        end
         if (!LITTLE_ENDIAN) begin
           data_buf[(DATA_WIDTH * NUM_PACK) - 1 : DATA_WIDTH] <= data_buf[(DATA_WIDTH * (NUM_PACK - 1)) - 1:0];
           data_buf[DATA_WIDTH - 1 : 0] <= s_dat_i;
@@ -102,22 +111,18 @@ module wish_pack
           if (cnt == NUM_PACK - 1) begin
             d_stb_o <= 1;
             d_cyc_o <= 1;
-            if (s_tgc_i) begin
-              d_tgc_o <= s_tgc_i;
-            end else if (stored_tgc) begin
-              d_tgc_o <= stored_tgc;
-            end    
+            d_tgc_o <= s_tgc_i | stored_tgc;
           end else begin
             d_stb_o <= 0;
             d_cyc_o <= 0;
+            d_tgc_o <= 0;
           end
 
 
-          stored_tgc <= s_tgc_i | stored_tgc;
           cnt <= cnt + 1;
         end else begin//end cnt < NUM_PACK
           cnt <= 1;
-          stored_tgc <= s_tgc_i;
+//          stored_tgc <= s_tgc_i;
         end//end cnt >= NUM_PACK
 
       end//end var move

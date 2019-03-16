@@ -33,8 +33,6 @@ module wish_readIntegers
   integer                    i;
 
   reg                        loaded;
-  reg [DATA_WIDTH - 1:0]     tmp0;
-  reg [DATA_WIDTH - 1:0]     tmp1;
   integer                    tmp;
   integer                    char;
   
@@ -63,9 +61,9 @@ module wish_readIntegers
       end
       tgc_o[0] = 1;
       if (char == ";") begin
-        tgc_o[1] = 1;
+        tgc_o[1] <= 1;
       end else begin
-        tgc_o[1] = 0;
+        tgc_o[1] <= 0;
       end
     
       loaded <= 1;

@@ -5,7 +5,7 @@ wish_pack_phony : generated/wish_pack.smt2
 generated/wish_pack.lst : generated/wish_pack
 	./generated/wish_pack > $@
 
-generated/wish_pack : ../../hdl/wish_pack.v tb/tb_wish_pack.v
+generated/wish_pack : ../../hdl/wish_pack.v tb/tb_wish_pack.v ../../simhdl/wish_readIntegers.v ../../simhdl/wish_writeIntegers.v
 	iverilog -o generated/wish_pack $^
 
 .phony: wish_pack_phony clean
