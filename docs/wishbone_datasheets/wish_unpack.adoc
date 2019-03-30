@@ -1,0 +1,49 @@
+Wishbone Datasheet for wish_pack
+================================
+
+wish_unpack is a wishbone B4 compliant module. It takes NUM_PACK words of DATA_WIDTH size at once as an input. It outputs one word at a time on the destination bus.
+
+.Sys bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+| clk_i | clk_i: rising edge clock
+| rst_i | rst_i
+|====================
+
+.Parameter table
+[width="75%"]
+|====================
+|Parameter | Description
+
+| DATA_WIDTH    | bit width of dest data bus, granularity of src data bus
+| NUM_PACK      | number of dest data bus words per src data input
+| LITTLE_ENDIAN | specifies if s_dat_i is little endian, otherwise big endian.
+|====================
+
+
+.Src bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+ | s_stb_i   | stb_i
+ | s_cyc_i   | cyc_i
+ | s_ack_o   | ack_o
+ | s_stall_o | stall_o (optional)
+ | s_dat_i   | dat_i: DATA_WIDTH * NUM_PACK wide, DATA_WIDTH granularity. little endian if LITTLE_ENDIAN is 1
+ | s_tgc_i   | tgc_i: 2 bits wide, bit 0 is high when first item of packet, bit 1 is high when last item of packet
+|====================
+
+.Dest bus table
+[width="75%"]
+|====================
+|Signal | Description
+
+| d_stb_o | stb_o
+| d_cyc_o | cyc_o
+| d_ack_i | ack_i
+| d_dat_o | dat_o: DATA_WIDTH wide, DATA_WIDTH granularity
+| s_tgc_i | tgc_i: 2 bits wide, bit 0 is high when first item of packet, bit 1 is high when last item of packet.
+|====================

@@ -1,13 +1,14 @@
-default: generated/wish_pack.html generated/wish_readIntegers.html generated/wish_writeIntegers.html
+adoc_srcs = $(wildcard *.adoc)
+adoc_outputs = $(adoc_srcs:.adoc=.html)
+pathed_adoc_outputs = $(foreach ad, $(adoc_outputs), generated/$(ad))
 
-generated/wish_pack.html : wish_pack.adoc | generated
-	asciidoc -o generated/wish_pack.html wish_pack.adoc 
+default: $(pathed_adoc_outputs)
 
-generated/wish_readIntegers.html : wish_readIntegers.adoc | generated
-	asciidoc -o generated/wish_readIntegers.html wish_readIntegers.adoc
-
-generated/wish_writeIntegers.html : wish_writeIntegers.adoc | generated
-	asciidoc -o generated/wish_writeIntegers.html wish_writeIntegers.adoc
+generated/%.html : %.adoc | generated
+	asciidoc -o $@ $<
 
 generated :
 	mkdir -p generated
+
+clean :
+	rm -r generated
