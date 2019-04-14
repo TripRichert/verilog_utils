@@ -54,13 +54,7 @@ module wish_unpack
   integer                                i;
   reg                                    stored = 0;
   reg                                    [1:0]tgc_buf;
-  
-  
-  
-
-  
-  assign d_tgc_o = s_tgc_i;
-  
+    
   assign d_dat_o = (LITTLE_ENDIAN)?data_buf[DATA_WIDTH * cnt +:DATA_WIDTH]:data_buf[DATA_WIDTH * (NUM_PACK - 1 - cnt) +:DATA_WIDTH];
   
   assign d_stb_o = !rst_i && stored;

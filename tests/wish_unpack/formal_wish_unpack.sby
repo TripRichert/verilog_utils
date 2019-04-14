@@ -1,0 +1,13 @@
+[options]
+mode prove
+
+[engines]
+smtbmc
+
+[script]
+read -formal wish_unpack.v formal_wish_unpack.v
+prep -top formal_wish_unpack
+
+[files]
+hdl/wish_unpack.v
+formal/formal_wish_unpack.v

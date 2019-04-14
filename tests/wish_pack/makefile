@@ -1,6 +1,10 @@
-wish_pack_phony : generated/wish_pack.smt2
-	yosys-smtbmc -s z3 --dump-vcd generated/wish_pack.vcd generated/wish_pack.smt2
-	yosys-smtbmc -s z3 -i --dump-vcd generated/wish_pack.vcd generated/wish_pack.smt2
+formal_wish_pack/empty.phony : formal_wish_pack.sby ../../hdl/wish_pack.v formal/formal_wish_pack.v | hdl
+	sby -f formal_wish_pack.sby
+	mkdir -p formal_wish_pack
+	touch formal_wish_pack/empty.phony
+
+hdl :
+	ln -s ../../hdl .
 
 generated/wish_pack.lst : generated/wish_pack
 	./generated/wish_pack > $@
@@ -10,8 +14,7 @@ generated/wish_pack : ../../hdl/wish_pack.v tb/tb_wish_pack.v ../../simhdl/wish_
 
 .phony: wish_pack_phony clean
 
-generated/wish_pack.smt2: ../../hdl/wish_pack.v formal/formal_wish_pack.v
-	yosys -ql generated/wish_pack.yslog -p 'read_verilog -formal -sv ../../hdl/wish_pack.v formal/formal_wish_pack.v; prep -top formal_wish_pack -nordff; write_smt2 -wires generated/wish_pack.smt2'
-
 clean:
-	rm generated/*
+	rm -f generated/*
+	rm -rf formal_wish_pack
+	rm -r hdl
