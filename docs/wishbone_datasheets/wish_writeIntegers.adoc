@@ -1,7 +1,7 @@
 Wishbone Datasheet for wish_writeIntegers
 =========================================
 
-Simulation only wish_writeIntegers is a wishbone B4 compliant module. It logs N integers per line (space separated) to a file from a concatonated input
+Simulation only wish_writeIntegers is a wishbone B4 compliant slave. It logs N integers per line (space separated) to a file from a concatonated input
 
 .Sys bus table
 [width="75%"]

@@ -1,7 +1,7 @@
 Wishbone Datasheet for wish_pack
 ================================
 
-wish_pack is a wishbone B4 compliant module. It takes DATA_WIDTH width data from a src bus over several clock cycles, then concatonates NUM_PACK data samples and outputs the result on a dest bus.
+wish_pack is a wishbone B4 compliant module that contains both a master bus and a slave bus. It takes DATA_WIDTH width data from a src bus over several clock cycles, then concatonates NUM_PACK data samples and outputs the result on a dest bus.
 
 .Sys bus table
 [width="75%"]

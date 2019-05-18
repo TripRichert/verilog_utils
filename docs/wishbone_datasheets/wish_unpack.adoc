@@ -1,7 +1,7 @@
 Wishbone Datasheet for wish_pack
 ================================
 
-wish_unpack is a wishbone B4 compliant module. It takes NUM_PACK words of DATA_WIDTH size at once as an input. It outputs one word at a time on the destination bus.
+wish_unpack is a wishbone B4 compliant module that contains both a master bus and a slave bus. It takes NUM_PACK words of DATA_WIDTH size at once as an input. It outputs one word at a time on the destination bus.
 
 .Sys bus table
 [width="75%"]

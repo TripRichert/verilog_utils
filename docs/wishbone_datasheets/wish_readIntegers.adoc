@@ -1,7 +1,7 @@
 Wishbone Datasheet for wish_readIntegers
 ========================================
 
-Simulation only wish_readIntegers is a wishbone B4 compliant module. It reads N integers per line from a file and outputs them concatonated on dat_o.
+Simulation only wish_readIntegers is a wishbone B4 compliant master. It reads N integers per line from a file and outputs them concatonated on dat_o.
 
 .Sys bus table
 [width="75%"]
