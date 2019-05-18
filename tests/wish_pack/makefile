@@ -17,4 +17,4 @@ generated/wish_pack : ../../hdl/wish_pack.v tb/tb_wish_pack.v ../../simhdl/wish_
 clean:
 	rm -f generated/*
 	rm -rf formal_wish_pack
-	rm -r hdl
+	rm -rf hdl

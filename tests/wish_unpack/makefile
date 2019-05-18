@@ -17,4 +17,4 @@ generated/wish_unpack : ../../hdl/wish_unpack.v tb/tb_wish_unpack.v ../../simhdl
 clean:
 	rm -f generated/*
 	rm -rf formal_wish_unpack
-	rm -r hdl
+	rm -rf hdl
