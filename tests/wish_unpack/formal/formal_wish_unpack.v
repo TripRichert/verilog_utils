@@ -19,7 +19,7 @@ module formal_wish_unpack
    d_ack_i,
   
    d_dat_o,
-   d_tgc_o//logical or of packed s_tgc_i
+   d_tgc_o
    );
 
 localparam DATA_WIDTH = 8;
@@ -44,10 +44,12 @@ localparam LITTLE_ENDIAN = 1;
   output   [1:0]              d_tgc_o;
 
   reg      clk;
-/*  reg      [$clog2(NUM_PACK)+1:0]index;
+  reg      [$clog2(NUM_PACK)+1:0]index;
   reg      [DATA_WIDTH * NUM_PACK - 1:0] dat;
+  reg      [1:0]                         tgc;
+  
   reg                                    cached;
-  */
+  
   
   wish_unpack #(.LITTLE_ENDIAN(LITTLE_ENDIAN),
       .NUM_PACK(NUM_PACK),
@@ -67,7 +69,7 @@ localparam LITTLE_ENDIAN = 1;
      .d_dat_o(d_dat_o),
      .d_tgc_o(d_tgc_o)
      );
-/*
+
 `ifdef FORMAL
     initial assume(rst_i);
 `endif
@@ -79,17 +81,33 @@ localparam LITTLE_ENDIAN = 1;
   end
 
   always @(posedge clk) begin
+    `ifdef FORMAL
+      cover(s_stb_i && s_cyc_i && s_ack_o && !rst_i);
+      cover(d_stb_o && d_cyc_o && d_ack_i && !rst_i);
+    `endif
     if (s_stb_i && s_cyc_i && s_ack_o && !rst_i) begin
       dat <= s_dat_i;
+      tgc <= s_tgc_i;
+      
       cached <= 1;
     end
     if (rst_i) begin
       index <= 0;
     end else begin
       if (d_stb_o && d_cyc_o && d_ack_i) begin
-  `ifdef FORMAL
-        assert(dat[DATA_WIDTH * index +:DATA_WIDTH]);
-        `endif
+        `ifdef FORMAL
+          assert(dat[DATA_WIDTH * index +:DATA_WIDTH] == d_dat_o);
+          if (index == 0) begin
+            assert(d_tgc_o[0] == tgc[0]);
+          end else begin
+            assert(d_tgc_o[0] == 1'b0);
+          end
+          if (index == NUM_PACK - 1) begin
+            assert(d_tgc_o[1] == tgc[1]);
+          end else begin
+            assert(d_tgc_o[1] == 1'b0);
+          end
+       `endif
         if (index == NUM_PACK - 1 && (!s_stb_i || !s_cyc_i || !s_ack_o)) begin
           cached <= 0;
         end
@@ -97,11 +115,11 @@ localparam LITTLE_ENDIAN = 1;
       end
     end
     `ifdef FORMAL
-    assume(!(s_stb_i && s_cyc_i) || !cached || ((index == NUM_PACK - 1) && (d_stb_o && d_cyc_o && d_ack_i)));
-    assume(!rst_i || !(s_stb_i || s_cyc_i || d_ack_i));
+      assume(!(s_stb_i && s_cyc_i) || !cached || ((index == NUM_PACK - 1) && (d_stb_o && d_cyc_o && d_ack_i)));
+      assume(!rst_i || !(s_stb_i || s_cyc_i || d_ack_i));
     `endif
   end
-*/
+
   initial begin
     clk = 0;
   end

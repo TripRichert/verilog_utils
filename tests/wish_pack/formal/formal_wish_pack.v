@@ -110,6 +110,8 @@ module formal_wish_pack
   end
 
   always @(posedge clk) begin
+    cover(s_stb_i && s_cyc_i && s_ack_o && !rst_i);
+    cover(d_stb_o && d_cyc_o && d_ack_i && !rst_i);
     if (!(s_stb_i && s_cyc_i)) begin
       gap_cnt <= gap_cnt + 1;
     end else begin
