@@ -9,5 +9,5 @@ read -formal wish_pack.v formal_wish_pack.v
 prep -top formal_wish_pack
 
 [files]
-hdl/wish_pack.v
-formal/formal_wish_pack.v
+wish_pack.v
+formal_wish_pack.v

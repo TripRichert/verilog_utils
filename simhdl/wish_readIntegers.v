@@ -16,8 +16,6 @@ module wish_readIntegers
   parameter N = 2;
   parameter DATA_WIDTH = 32;
   parameter LITTLE_ENDIAN = 1;
-  
- // parameter N = 2;
   parameter filename = "test.dat";
 
   input clk_i;
@@ -45,7 +43,7 @@ module wish_readIntegers
     loaded = 0;
     data_file = $fopen(filename, "r");
     if (data_file == 0) begin
-      $display("data_file handle was NULL");
+      $display("read data_file handle was NULL");
       $finish;
     end
     tgc_o = 0;

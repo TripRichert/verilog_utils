@@ -16,8 +16,6 @@ module wish_writeIntegers
   parameter N = 2;
   parameter DATA_WIDTH = 32;
   parameter LITTLE_ENDIAN = 1;
-  
- // parameter N = 2;
   parameter filename = "test.dat";
 
   input clk_i;

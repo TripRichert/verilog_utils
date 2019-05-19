@@ -5,8 +5,8 @@ module tb_wish_pack;
   localparam NUM_PACK   = 4;
   localparam TGC_WIDTH  = 2;
   localparam LITTLE_ENDIAN = 0;
-  localparam filename = "testcases/test1.dat";
-  localparam logfilename = "testcases/test1.result";
+  localparam filename = "test1.dat";
+  localparam logfilename = "test1.result";
 
   reg  clk;
   reg  rst;
@@ -30,10 +30,10 @@ module tb_wish_pack;
   
 
   wish_readIntegers #(
-                  .DATA_WIDTH(DATA_WIDTH),
                   .N(1),
-                  .filename(filename),
-                  .LITTLE_ENDIAN(LITTLE_ENDIAN)
+                  .DATA_WIDTH(DATA_WIDTH),
+                  .LITTLE_ENDIAN(LITTLE_ENDIAN),
+                  .filename(filename)
                       ) stim 
     (
      .clk_i(clk),

@@ -5,8 +5,8 @@ module tb_wish_unpack;
   localparam NUM_PACK   = 4;
   localparam TGC_WIDTH  = 2;
   localparam LITTLE_ENDIAN = 0;
-  localparam filename = "testcases/test0.dat";
-  localparam logfilename = "testcases/test0.result";
+  localparam filename = "../testcases/test0.dat";
+  localparam logfilename = "../testcases/test0.result";
 
   reg  clk;
   reg  rst;
