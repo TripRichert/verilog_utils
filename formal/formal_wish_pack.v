@@ -48,8 +48,6 @@ module formal_wish_pack
   reg                              [$clog2(NUM_PACK):0]index;
   reg [DATA_WIDTH * NUM_PACK - 1:0]                    dat;
 
-  reg [3:0]                                            gap_cnt;
-  reg [3:0]                                            ack_gap_cnt;
   reg [TGC_WIDTH - 1 : 0]                              tgc;
   
   
@@ -78,8 +76,6 @@ module formal_wish_pack
 
   initial begin
 	init_1z = 0;
-    gap_cnt = 0;
-    ack_gap_cnt = 0;
    end
 
   
@@ -90,8 +86,6 @@ module formal_wish_pack
     end
 	init_1z <= 1;
 	if (init_1z) begin
-      restrict property (gap_cnt < NUM_PACK);
-      restrict property (ack_gap_cnt < NUM_PACK + 2);
       assert(!(s_stall_o && s_ack_o));//stall and ack are multually exclusive
       assert(!(rst_i && s_ack_o));
       if (d_stb_o && d_cyc_o && d_ack_i && !rst_i) begin
@@ -112,16 +106,6 @@ module formal_wish_pack
   always @(posedge clk) begin
     cover(s_stb_i && s_cyc_i && s_ack_o && !rst_i);
     cover(d_stb_o && d_cyc_o && d_ack_i && !rst_i);
-    if (!(s_stb_i && s_cyc_i)) begin
-      gap_cnt <= gap_cnt + 1;
-    end else begin
-      gap_cnt <= 0;
-    end
-    if (!d_ack_i) begin
-      ack_gap_cnt <= ack_gap_cnt + 1;
-    end else begin
-      ack_gap_cnt <= 0;
-    end
     if (s_stb_i && s_cyc_i && s_ack_o) begin
       dat[(index + 1) * DATA_WIDTH - 1 : index * DATA_WIDTH] <= s_dat_i;
       if ((LITTLE_ENDIAN)?(index == NUM_PACK - 1):(index == 0)) begin

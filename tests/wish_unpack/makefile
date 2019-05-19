@@ -20,7 +20,7 @@ generated/formal.phony : $(hdl_sources) $(formal_sources)
 
 define cp_to_generated
 generated/$(notdir $1): $1
-	cp $1 generated/$(notdir $1);chmod -w generated/$(notdir $1);
+	cp -f $1 generated/$(notdir $1);chmod -w generated/$(notdir $1);
 endef
 $(foreach file,$(orig_all_sources), $(eval $(call cp_to_generated,$(file))))
 
