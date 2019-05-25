@@ -14,20 +14,24 @@ sim_sources := $(call generated_sources_fun,$(orig_sim_sources))
 data_sources := $(call generated_sources_fun,$(orig_data_sources))
 all_sources := $(call generated_sources_fun,$(orig_all_sources))
 
-generated/formal.phony : $(hdl_sources) $(formal_sources)
+
+generated/formal.phony : $(hdl_sources) $(formal_sources) | generated
 	cd generated;sby -f formal_wish_unpack.sby
 	touch generated/formal.phony
 
 define cp_to_generated
-generated/$(notdir $1): $1
+generated/$(notdir $1): $1 | generated
 	cp -f $1 generated/$(notdir $1);chmod -w generated/$(notdir $1);
 endef
 $(foreach file,$(orig_all_sources), $(eval $(call cp_to_generated,$(file))))
 
-generated/wish_unpack.lst : generated/wish_unpack $(orig_data_sources)
+generated :
+	mkdir -p generated
+
+generated/wish_unpack.lst : generated/wish_unpack $(orig_data_sources) | generated
 	cd generated;./wish_unpack > $(notdir $@)
 
-generated/wish_unpack : $(hdl_sources) $(sim_sources) $(data_sources)
+generated/wish_unpack : $(hdl_sources) $(sim_sources) $(data_sources) | generated
 	cd generated;iverilog -o wish_unpack $(foreach file,$(hdl_sources) $(sim_sources),$(notdir $(file)))
 
 .phony: clean
