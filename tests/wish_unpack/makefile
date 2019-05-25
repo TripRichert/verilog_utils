@@ -2,7 +2,7 @@ orig_hdl_sources    = ../../hdl/wish_unpack.v
 orig_formal_sources = ../../formal/formal_wish_unpack.sby ../../formal/formal_wish_unpack.v
 orig_sim_sources    = ../../simhdl/wish_readIntegers.v ../../simhdl/wish_writeIntegers.v tb/tb_wish_unpack.v
 orig_data_sources   = testcases/test0.dat
-orig_all_sources    = $(orig_formal_sources) $(orig_sim_sources) $(orig_hdl_sources) $(orig_data_files)
+orig_all_sources    = $(orig_formal_sources) $(orig_sim_sources) $(orig_hdl_sources) $(orig_data_sources)
 
 define generated_sources_fun
 $(foreach source,$1,generated/$(notdir $(source)))
@@ -25,9 +25,9 @@ endef
 $(foreach file,$(orig_all_sources), $(eval $(call cp_to_generated,$(file))))
 
 generated/wish_unpack.lst : generated/wish_unpack $(orig_data_sources)
-	./generated/wish_unpack > $@
+	cd generated;./wish_unpack > $(notdir $@)
 
-generated/wish_unpack : $(hdl_sources) $(sim_sources)
+generated/wish_unpack : $(hdl_sources) $(sim_sources) $(data_sources)
 	cd generated;iverilog -o wish_unpack $(foreach file,$(hdl_sources) $(sim_sources),$(notdir $(file)))
 
 .phony: clean
